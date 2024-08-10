@@ -1,24 +1,29 @@
+import Head from 'next/head';
 import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
-import Link from 'next/link';
+import Date from '../../components/date';
+import utilStyles from '../../styles/utils.module.css';
 
 export default function Posts({ postData }) {
 	return (
 		<Layout>
-			<Link href={'posts/'}>{postData.title}</Link>
+			<Head>
+				<title>{postData.title}</title>
+			</Head>
 
-			<br />
-			{postData.id}
-			<br />
-			{postData.date}
-			<br />
-			<div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+			<article>
+				<h1 className={utilStyles.headingX1}>{postData.title}</h1>
+				<div className={utilStyles.lightText}>
+					<Date dateString={postData.date} />
+				</div>
+				<div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+			</article>
 		</Layout>
 	);
 }
 
 export async function getStaticPaths() {
-	// return a list of                                                                                                 possible value for id
+	// Return a list of possible value for id
 	const paths = getAllPostIds();
 	return {
 		paths,
